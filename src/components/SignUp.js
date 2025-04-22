@@ -6,19 +6,25 @@ import LoginImage from "../assets/login.jpg"; // Correctly import the image
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 
 const Signup = () => {
-  const { setUser } = useContext(UserContext); // Access the setUser function from context
+  const { setUser, setUserType } = useContext(UserContext); // Access the setUser and setUserType functions from context
   const [isCodeSent, setIsCodeSent] = useState(false); // Track if the code has been sent
-  const [userType, setUserType] = useState("student"); // State to track selected user type
+  const [userType, setLocalUserType] = useState("student"); // Default userType is "student"
   const [name, setFullName] = useState(""); // State for full name
   const [email, setEmail] = useState(""); // State for email
   const [verificationCode, setVerificationCode] = useState(""); // State for verification code
-  const navigate = useNavigate(); // Hook for navigation
   const [message, setMessage] = useState(""); // State for success/error message
+  const navigate = useNavigate(); // Hook for navigation
+
+  // Update the global userType when the local userType changes
+  const handleUserTypeChange = (type) => {
+    setLocalUserType(type);
+    setUserType(type); // Update the global userType in context
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    const endpoint = "http://localhost:5000/api/auth/signup"; // Backend login endpoint
+    const endpoint = "https://ignited-psi.vercel.app/api/auth/signup"; // Backend signup endpoint
 
     try {
       const response = await axios.post(endpoint, { name, email, userType });
@@ -36,7 +42,7 @@ const Signup = () => {
   const handleVerifyCode = async (e) => {
     e.preventDefault();
 
-    const verifyEndpoint = "http://localhost:5000/api/auth/verify-code"; // Backend verification endpoint
+    const verifyEndpoint = "https://ignited-psi.vercel.app/api/auth/verify-code"; // Backend verification endpoint
 
     try {
       // Verify the code
@@ -50,17 +56,22 @@ const Signup = () => {
         setMessage(verifyResponse.data.message); // Message: "Code verified successfully!"
 
         const userEndpoint =
-      userType === "student"
-        ? `http://localhost:5000/api/students/email/${email}` // Pass email in the URL
-        : `http://localhost:5000/api/instructors/email/${email}`; // Endpoint to fetch instructor data
-        
+          userType === "student"
+            ? `https://ignited-psi.vercel.app/api/students/email/${email}` // Pass email in the URL
+            : `https://ignited-psi.vercel.app/api/instructors/email/${email}`; // Endpoint to fetch instructor data
+
         // Fetch the user data based on the email
         const userResponse = await axios.get(userEndpoint);
 
         if (userResponse.status === 200 && userResponse.data) {
           console.log("User data retrieved successfully:", userResponse.data); // Log user data
           setUser(userResponse.data); // Set the user data in the global context
-          navigate("/StudentDashboard"); // Redirect to the dashboard
+          // Navigate to the appropriate dashboard based on user type
+          if (userType === "student") {
+            navigate("/StudentDashboard");
+          } else if (userType === "instructor") {
+            navigate("/InstructorDashboard");
+          }
         } else {
           console.error("Failed to retrieve user data:", userResponse); // Log failure
           setMessage("Failed to retrieve user data. Please try again.");
@@ -92,10 +103,13 @@ const Signup = () => {
                 id="student"
                 value="student"
                 checked={userType === "student"}
-                onChange={() => setUserType("student")}
+                onChange={() => handleUserTypeChange("student")}
                 hidden
               />
-              <label htmlFor="student" className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75">
+              <label
+                htmlFor="student"
+                className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75"
+              >
                 Student
               </label>
             </div>
@@ -106,43 +120,46 @@ const Signup = () => {
                 id="instructor"
                 value="instructor"
                 checked={userType === "instructor"}
-                onChange={() => setUserType("instructor")}
+                onChange={() => handleUserTypeChange("instructor")}
                 hidden
               />
-              <label htmlFor="instructor" className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75">
+              <label
+                htmlFor="instructor"
+                className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75"
+              >
                 Instructor
               </label>
             </div>
           </div>
 
           {!isCodeSent ? (
-          <form onSubmit={handleSignup}>
-            <div className="form-group">
-              <label htmlFor="name">Full Name</label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Enter your full name"
-                value={name}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" className="auth-button">
-              Signup as {userType === "student" ? "Student" : "Instructor"}
-            </button>
-          </form>
+            <form onSubmit={handleSignup}>
+              <div className="form-group">
+                <label htmlFor="name">Full Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="auth-button">
+                Signup as {userType === "student" ? "Student" : "Instructor"}
+              </button>
+            </form>
           ) : (
             <form onSubmit={handleVerifyCode}>
               <div className="form-group">

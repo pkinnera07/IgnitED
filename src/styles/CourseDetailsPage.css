@@ -93,27 +93,45 @@
 .course-detail-main {
     display: flex;
     gap:20px;
-    height: 60vh;
+    align-items: center;
+    height: 55vh;
+}
+
+.course-detail-side{
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f0f0f0b0; /* Light gray background for the course detail section */
 }
 
 .course-detail-image {
   display: flex;
-  height: auto;
-  margin-bottom: 20px;
+  height: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .course-detail-title {
-  font-size: 2em;
-  margin-bottom: 10px;
-  color: #011f4b;
+  font-size: 30px;
+  margin: 0px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  color: aliceblue;
+  border-radius: 10px;
+  background-image: url(../assets/header.jpg);
+  background-size: cover;
 }
 
 .course-details p {
   font-size: 1em;
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: auto;
+  color: #000000;
 }
 
 .description {
@@ -212,20 +230,20 @@
 }
 
 /* Unenroll prompt styling */
-.unenroll-prompt {
+.prompt {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-.unenroll-prompt-content {
+.prompt-content {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
@@ -233,8 +251,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.unenroll-prompt-content h2 {
+.prompt-content h2 {
   margin-bottom: 20px;
+  background-image: url(../assets/header.jpg);
+  background-size: cover;
+  color: white;
+  border-radius: 10px;
 }
 
 .confirm-button {
@@ -264,4 +286,24 @@
 
 .cancel-button:hover {
   background-color: darkgray;
+}
+
+.prompt-button{
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px;
+  font-size: 1em;
+}
+
+.prompt-button:hover {
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+  background-image: url(../assets/header.jpg);
+  background-size: cover;
+  color: white;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.516); /* Add shadow on hover */
+  transform: translateY(-5px); /* Slightly lift the button on hover */
 }

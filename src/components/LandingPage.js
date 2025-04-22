@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/LandingPage.css";
 import s1 from "../assets/s1.png"; // Correctly import the image
 import s2 from "../assets/s2.png"; // Correctly import the image

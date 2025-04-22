@@ -9,6 +9,7 @@ const StudentDashboard = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const { user } = useContext(UserContext); // Access the user data from context
   const [fullCourseData, setFullCourseData] = useState([]); // State to store full course details
+  const [recommendations, setRecommendations] = useState([]); // State to store course recommendations
   const [loading, setLoading] = useState(true); // State to track loading
   const [error, setError] = useState(null); // State to track errors
   const navigate = useNavigate();
@@ -41,13 +42,60 @@ const StudentDashboard = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const enrolledCourseIds = user?.enrolledCourses?.map((course) => course._id) || [];
+
+        if (user?.enrolledCourses?.length > 0) {
+          // Fetch recommendations for the first enrolled course
+          const courseId = user.enrolledCourses[0]._id;
+          const response = await axios.get(
+            `https://course-recommendations-api.vercel.app/recommendations/${courseId}`
+          );
+
+          let recommendedCourses = response.data || [];
+
+          // Filter out enrolled courses from recommendations
+          recommendedCourses = recommendedCourses.filter(
+            (course) => !enrolledCourseIds.includes(course._id)
+          );
+
+          if (recommendedCourses.length > 0) {
+            setRecommendations(recommendedCourses); // Set recommendations if available
+          } else {
+            // Fetch two random courses as fallback
+            const randomCoursesResponse = await axios.get(
+              "https://ignited-psi.vercel.app/api/courses/random?count=2"
+            );
+            const randomCourses = randomCoursesResponse.data.filter(
+              (course) => !enrolledCourseIds.includes(course._id)
+            );
+            setRecommendations(randomCourses);
+          }
+        } else {
+          // Fetch two random courses as fallback if no enrolled courses
+          const randomCoursesResponse = await axios.get(
+            "https://ignited-psi.vercel.app/api/courses/random?count=2"
+          );
+          setRecommendations(randomCoursesResponse.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch recommendations:", err);
+        setError("Failed to load recommendations. Please try again later.");
+      }
+    };
+
+    fetchRecommendations();
+  }, [user]);
+
   const renderContent = () => {
     switch (activeSection) {
       case "overview":
         return (
           <div className="content">
-            <h2>Overview</h2>
-            <p>Welcome to your dashboard, {user?.name || "Student"}!</p>
+            <h2 className="section-title">Overview</h2>
+            <h1>Welcome to your dashboard, {user?.name || "Student"}!</h1>
             <p>Here is an overview of your courses:</p>
             <ul>
               {user?.enrolledCourses?.length > 0 ? (
@@ -58,6 +106,21 @@ const StudentDashboard = () => {
                 <p>You are not enrolled in any courses yet.</p>
               )}
             </ul>
+            <h3 className="section-subtitle">Recommended for you</h3>
+            <div className="course-grid">
+              {recommendations.length > 0 ? (
+                recommendations.map((course) => (
+                  console.log(course),
+                  <CourseCard
+                    key={course._id}
+                    course={course}
+                    onClick={() => navigate(`/course/${course._id}`)}
+                  />
+                ))
+              ) : (
+                <p>No recommendations available at the moment.</p>
+              )}
+            </div>
           </div>
         );
       case "courses":
@@ -71,12 +134,15 @@ const StudentDashboard = () => {
 
         return (
           <div className="content">
-            <h2>Enrolled Courses</h2>
+            <h2 className="section-title">Enrolled Courses</h2>
             <div className="course-grid">
               {fullCourseData.length > 0 ? (
                 fullCourseData.map((course) => (
-                  <CourseCard key={course._id} course={course} 
-                  onClick={() => navigate(`/course/${course._id}`)}/>
+                  <CourseCard
+                    key={course._id}
+                    course={course}
+                    onClick={() => navigate(`/course/${course._id}`)}
+                  />
                 ))
               ) : (
                 <p>You are not enrolled in any courses yet.</p>
@@ -87,7 +153,7 @@ const StudentDashboard = () => {
       case "grades":
         return (
           <div className="content">
-            <h2>Grades</h2>
+            <h2 className="section-title">Grades</h2>
             <ul>
               <li>Course 1: A</li>
               <li>Course 2: B+</li>
@@ -98,7 +164,7 @@ const StudentDashboard = () => {
       case "certificates":
         return (
           <div className="content">
-            <h2>Certificates</h2>
+            <h2 className="section-title">Certificates</h2>
             <ul>
               <li>Course 1: Certificate of Completion</li>
               <li>Course 3: Certificate of Completion</li>

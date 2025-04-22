@@ -6,17 +6,24 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 
 const Login = () => {
-  const { setUser, userType, setUserType } = useContext(UserContext); // Access the setUser function from context
+  const { setUser, setUserType } = useContext(UserContext); // Access the setUser and setUserType functions from context
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [message, setMessage] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false); // Track if the code has been sent
+  const [userType, setLocalUserType] = useState("student"); // Default userType is "student"
   const navigate = useNavigate();
+
+  // Update the global userType when the local userType changes
+  const handleUserTypeChange = (type) => {
+    setLocalUserType(type);
+    setUserType(type); // Update the global userType in context
+  };
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
 
-    const endpoint = "http://localhost:5000/api/auth/login"; // Backend login endpoint
+    const endpoint = "https://ignited-psi.vercel.app/api/auth/login"; // Backend login endpoint
 
     try {
       const response = await axios.post(endpoint, { email, userType });
@@ -34,7 +41,7 @@ const Login = () => {
   const handleVerifyCode = async (e) => {
     e.preventDefault();
 
-    const verifyEndpoint = "http://localhost:5000/api/auth/verify-code"; // Backend verification endpoint
+    const verifyEndpoint = "https://ignited-psi.vercel.app/api/auth/verify-code"; // Backend verification endpoint
 
     try {
       // Verify the code
@@ -48,10 +55,10 @@ const Login = () => {
         setMessage(verifyResponse.data.message); // Message: "Code verified successfully!"
 
         const userEndpoint =
-      userType === "student"
-        ? `http://localhost:5000/api/students/email/${email}` // Pass email in the URL
-        : `http://localhost:5000/api/instructors/email/${email}`; // Endpoint to fetch instructor data
-        
+          userType === "student"
+            ? `https://ignited-psi.vercel.app/api/students/email/${email}` // Pass email in the URL
+            : `https://ignited-psi.vercel.app/api/instructors/email/${email}`; // Endpoint to fetch instructor data
+
         // Fetch the user data based on the email
         const userResponse = await axios.get(userEndpoint);
 
@@ -59,11 +66,11 @@ const Login = () => {
           console.log("User data retrieved successfully:", userResponse.data); // Log user data
           setUser(userResponse.data); // Set the user data in the global context
           // Navigate to the appropriate dashboard based on user type
-        if (userType === "student") {
-          navigate("/StudentDashboard");
-        } else if (userType === "instructor") {
-          navigate("/InstructorDashboard");
-        }
+          if (userType === "student") {
+            navigate("/StudentDashboard");
+          } else if (userType === "instructor") {
+            navigate("/InstructorDashboard");
+          }
         } else {
           console.error("Failed to retrieve user data:", userResponse); // Log failure
           setMessage("Failed to retrieve user data. Please try again.");
@@ -92,10 +99,13 @@ const Login = () => {
                 id="student"
                 value="student"
                 checked={userType === "student"}
-                onChange={() => setUserType("student")}
+                onChange={() => handleUserTypeChange("student")}
                 hidden
               />
-              <label htmlFor="student" className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75">
+              <label
+                htmlFor="student"
+                className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75"
+              >
                 Student
               </label>
             </div>
@@ -106,10 +116,13 @@ const Login = () => {
                 id="instructor"
                 value="instructor"
                 checked={userType === "instructor"}
-                onChange={() => setUserType("instructor")}
+                onChange={() => handleUserTypeChange("instructor")}
                 hidden
               />
-              <label htmlFor="instructor" className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75">
+              <label
+                htmlFor="instructor"
+                className="radio text-center self-center py-2 px-4 rounded-lg cursor-pointer hover:opacity-75"
+              >
                 Instructor
               </label>
             </div>

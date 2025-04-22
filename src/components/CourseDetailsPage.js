@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "../styles/CourseDetailsPage.css";
 import axios from "axios";
 import { UserContext } from "../context/UserContext"; // Import UserContext
@@ -13,16 +13,21 @@ const CourseDetailsPage = () => {
   const [isEnrolled, setIsEnrolled] = useState(false); // Track enrollment status
   const [isCreator, setIsCreator] = useState(false); // Track if the user is the course creator
   const [showUnenrollPrompt, setShowUnenrollPrompt] = useState(false); // Track unenroll prompt visibility
+  const [showAddSectionForm, setShowAddSectionForm] = useState(false); // Track add section form visibility
+  const [newSection, setNewSection] = useState({ section: "", pdf: null }); // State for new section form
+  const [showDeletePrompt, setShowDeletePrompt] = useState(false); // Track delete course prompt visibility
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/courses/${courseId}`);
+        const response = await axios.get(`https://ignited-psi.vercel.app/api/courses/${courseId}`);
         setCourse(response.data);
       } catch (err) {
         console.error("Failed to load course details:", err);
       }
     };
+
 
     const checkEnrollmentOrCreator = () => {
       if (user) {
@@ -50,13 +55,31 @@ const CourseDetailsPage = () => {
     checkEnrollmentOrCreator();
   }, [courseId, user, userType]); // Add userType to the dependency array
 
+  const handleDeleteCourse = async () => {
+    try {
+      await axios.delete(`https://ignited-psi.vercel.app/api/courses/courseId/${course.courseId}`);
+      
+      // Fetch the updated user data from the backend
+      const updatedUserResponse = await axios.get(`https://ignited-psi.vercel.app/api/instructors/${user._id}`);
+      const updatedUser = updatedUserResponse.data;
+
+      // Update the user data in the UserContext
+      setUser(updatedUser);
+      
+      setShowDeletePrompt(false); // Close the prompt
+      navigate("/InstructorDashboard"); // Redirect to the instructor dashboard after deletion
+    } catch (err) {
+      console.error("Failed to delete course:", err);
+    }
+  };
+
   const handleEnroll = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/students/${user._id}/enroll`, { courseId });
+      await axios.post(`https://ignited-psi.vercel.app/api/students/${user._id}/enroll`, { courseId });
 
       setIsEnrolled(true); // Update enrollment status after successful enrollment
       // Fetch the updated user data from the backend
-      const updatedUserResponse = await axios.get(`http://localhost:5000/api/students/${user._id}`);
+      const updatedUserResponse = await axios.get(`https://ignited-psi.vercel.app/api/students/${user._id}`);
       const updatedUser = updatedUserResponse.data;
 
       // Update the user data in the UserContext
@@ -68,13 +91,13 @@ const CourseDetailsPage = () => {
 
   const handleUnenroll = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/students/${user._id}/unenroll`, {
+      await axios.delete(`https://ignited-psi.vercel.app/api/students/${user._id}/unenroll`, {
         data: { courseId },
       });
 
       setIsEnrolled(false); // Update enrollment status after successful unenrollment
       // Fetch the updated user data from the backend
-      const updatedUserResponse = await axios.get(`http://localhost:5000/api/students/${user._id}`);
+      const updatedUserResponse = await axios.get(`https://ignited-psi.vercel.app/api/students/${user._id}`);
       const updatedUser = updatedUserResponse.data;
 
       // Update the user data in the UserContext
@@ -82,6 +105,38 @@ const CourseDetailsPage = () => {
       setShowUnenrollPrompt(false); // Close the prompt
     } catch (err) {
       console.error("Failed to unenroll from course:", err);
+    }
+  };
+
+  const handleAddSection = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("section", newSection.section);
+      formData.append("pdf", newSection.pdf);
+      console.log("course data",course);
+      console.log("course id",course.courseId);
+
+      const response = await axios.post(
+        `https://ignited-psi.vercel.app/api/courses/courseId/${course.courseId}/modules`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        // Refresh the course data to include the new section
+        const updatedCourse = await axios.get(`https://ignited-psi.vercel.app/api/courses/${courseId}`);
+        setCourse(updatedCourse.data);
+        setShowAddSectionForm(false); // Close the form
+        setNewSection({ section: "", pdf: null }); // Reset the form
+      }
+    } catch (err) {
+      console.error("Failed to add section:", err);
     }
   };
 
@@ -119,6 +174,24 @@ const CourseDetailsPage = () => {
             >
               Unenroll
             </button>
+          )}
+
+          {/* Upload Content Button (only if the user is the creator) */}
+          {isCreator && (
+            <>
+              <button
+                className="unenroll-button"
+                onClick={() => setShowAddSectionForm(true)} // Show the add section form
+              >
+                Upload Content
+              </button>
+              <button
+                className="unenroll-button"
+                onClick={() => setShowDeletePrompt(true)} // Show the delete course prompt
+              >
+                Delete Course
+              </button>
+            </>
           )}
         </div>
       )}
@@ -163,15 +236,63 @@ const CourseDetailsPage = () => {
         )}
       </div>
 
+      {/* Add Section Form (only if the user is the creator) */}
+      {showAddSectionForm && (
+        <div className="prompt">
+          <div className="prompt-content">
+          <h2>Add New Module</h2>
+          <form onSubmit={handleAddSection}>
+            <div className="form-group">
+              <label>Module Name</label>
+              <input
+                type="text"
+                value={newSection.section}
+                onChange={(e) => setNewSection({ ...newSection, section: e.target.value })}
+                placeholder="Enter Module name"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>PDF File</label>
+              <input
+                type="file"
+                onChange={(e) => setNewSection({ ...newSection, pdf: e.target.files[0] })}
+                required
+              />
+            </div>
+            <button className="prompt-button" type="submit">Upload</button>
+            <button className="prompt-button" type="button" onClick={() => setShowAddSectionForm(false)}>
+              Cancel
+            </button>
+          </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Prompt */}
+      {showDeletePrompt && (
+        <div className="prompt">
+          <div className="prompt-content">
+            <h2>Are you sure you want to delete this course?</h2>
+            <button className="confirm-button prompt-button" onClick={handleDeleteCourse}>
+              Yes, Delete
+            </button>
+            <button className="cancel-button prompt-button" onClick={() => setShowDeletePrompt(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Unenroll Confirmation Prompt */}
       {showUnenrollPrompt && (
-        <div className="unenroll-prompt">
-          <div className="unenroll-prompt-content">
+        <div className="prompt">
+          <div className="prompt-content">
             <h2>Are you sure you want to unenroll from this course?</h2>
-            <button className="confirm-button" onClick={handleUnenroll}>
+            <button className="confirm-button prompt-button" onClick={handleUnenroll}>
               Yes, Unenroll
             </button>
-            <button className="cancel-button" onClick={() => setShowUnenrollPrompt(false)}>
+            <button className="cancel-button prompt-button" onClick={() => setShowUnenrollPrompt(false)}>
               Cancel
             </button>
           </div>

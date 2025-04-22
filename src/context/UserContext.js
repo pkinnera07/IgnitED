@@ -34,8 +34,10 @@ export const UserProvider = ({ children }) => {
     }
   }, [userType]);
 
+  const [searchTerm, setSearchTerm] = useState(""); // Add searchTerm state
+
   return (
-    <UserContext.Provider value={{ user, setUser, userType, setUserType }}>
+    <UserContext.Provider value={{ user, setUser, userType, setUserType, searchTerm, setSearchTerm }}>
       {children}
     </UserContext.Provider>
   );

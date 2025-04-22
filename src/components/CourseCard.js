@@ -30,10 +30,10 @@ const CourseCard = ({ course, onClick }) => {
       {/* Info Section */}
       <div className="course-info">
         <p className="complexity">
-          <strong>Level</strong> <tr> </tr>{course.complexity || "N/A"}
+          <strong>Level</strong> {course.complexity || "N/A"}
         </p>
         <p className="instructor">
-          <strong>Instructor</strong> <tr> </tr> {course.instructor.name || "Unknown"}
+          <strong>Instructor</strong> {course.instructor.name || "Unknown"}
         </p>
       </div>
     </div>

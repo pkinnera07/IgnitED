@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 import { BsPersonCircle } from "react-icons/bs";
 import { BsHouseFill } from "react-icons/bs";
@@ -7,28 +7,23 @@ import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 
 const Header = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const { user, setUser, userType, setUserType } = useContext(UserContext); // Access the user data and setUser function from context
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  const { user, setUser, userType, setUserType, searchTerm, setSearchTerm } = useContext(UserContext);
+  const navigate = useNavigate(); // Initialize useNavigate
+
 
   const handleLogout = () => {
     setUser(null); // Clear the user data
     setUserType(null); // Clear the user type
   };
 
+  const handleSearchClick = () => {
+    navigate("/explore"); // Redirect to the Explore page
+  };
+
   return (
     <header className="header">
       <div className="header-left">
         <h1>IgnitED</h1>
-        <input
-          className="search-bar"
-          type="text"
-          placeholder="Search courses..."
-          value={searchTerm}
-          onChange={handleSearch}
-        />
         <div className="button-board">
           <Link to="/" className="link-button">
             <BsHouseFill /> Home
@@ -39,6 +34,16 @@ const Header = () => {
             <BsFillGrid3X3GapFill /> Explore
           </Link>
         </div>
+
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onClick={handleSearchClick} // Redirect to Explore page on click
+          className="search-bar"
+        />
+        
       </div>
       <div className="header-right">
         {!user ? (

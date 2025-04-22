@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import "../styles/StudentDashboard.css";
 import CourseCard from "./CourseCard"; // Assuming you have a CourseCard component for displaying courses
@@ -9,8 +9,6 @@ const InstructorDashboard = () => {
   const [activeSection, setActiveSection] = useState("createdCourses");
   const { user } = useContext(UserContext); // Access the user data from context
   const [createdCourses, setCreatedCourses] = useState([]); // State to store courses created by the instructor
-  const [loading, setLoading] = useState(true); // State to track loading
-  const [error, setError] = useState(null); // State to track errors
   const [newCourse, setNewCourse] = useState({
     name: "",
     description: "",
@@ -23,70 +21,61 @@ const InstructorDashboard = () => {
   }); // State for new course form
   const navigate = useNavigate();
 
-  const fetchInstructorData = async () => {
+  const fetchInstructorData = useCallback(async () => {
     try {
-      // Fetch courses created by the instructor
       const createdCoursesData = await Promise.all(
         user.coursesCreated.map(async (course) => {
           const response = await axios.get(
-            `http://localhost:5000/api/courses/${course._id}`
+            `https://ignited-psi.vercel.app/api/courses/${course._id}`
           );
           return response.data;
         })
       );
       setCreatedCourses(createdCoursesData);
     } catch (err) {
-      setError("Failed to load course details. Please try again later.");
-    } finally {
-      setLoading(false);
+      console.error("Failed to load course details. Please try again later.");
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (user) {
       fetchInstructorData();
     }
-  }, [user]);
+  }, [user, fetchInstructorData]);
 
   const handleCreateCourse = async (e) => {
     e.preventDefault();
 
     try {
-      // Step 1: Create the new course without the image
       const courseData = {
         ...newCourse,
-        tags: newCourse.tags.split(",").map((tag) => tag.trim()), // Convert tags to an array
+        tags: newCourse.tags.split(",").map((tag) => tag.trim()),
         prerequisites: newCourse.prerequisites
           .split(",")
-          .map((prerequisite) => prerequisite.trim()), // Convert prerequisites to an array
-        instructor: user._id, // Automatically set the logged-in instructor's ID
+          .map((prerequisite) => prerequisite.trim()),
+        instructor: user._id,
       };
 
-      // Exclude the image from the course data
       delete courseData.image;
 
-      console.log("Course Data:", courseData); // Log the course data for debugging
-
-      // Include the courseId in the courseData if provided
       if (newCourse.courseId) {
         courseData.courseId = newCourse.courseId;
       }
 
       const courseResponse = await axios.post(
-        "http://localhost:5000/api/courses",
+        "https://ignited-psi.vercel.app/api/courses",
         courseData
       );
 
       if (courseResponse.status === 201) {
-        const createdCourse = courseResponse.data; // Get the created course data
-        const courseId = createdCourse.courseId; // Extract the courseId (string)
+        const createdCourse = courseResponse.data;
+        const courseId = createdCourse.courseId;
 
-        // Step 2: Upload the image using the courseId
         const formData = new FormData();
         formData.append("image", newCourse.image);
 
         const uploadResponse = await axios.post(
-          `http://localhost:5000/api/courses/courseId/${courseId}/image`,
+          `https://ignited-psi.vercel.app/api/courses/courseId/${courseId}/image`,
           formData,
           {
             headers: {
@@ -95,14 +84,13 @@ const InstructorDashboard = () => {
           }
         );
 
-        // Step 3: Update the course with the image URL
         const updatedCourseData = {
           ...createdCourse,
-          image: uploadResponse.data.url, // Use the uploaded image URL
+          image: uploadResponse.data.url,
         };
 
         const updateResponse = await axios.put(
-          `http://localhost:5000/api/courses/courseId/${courseId}`,
+          `https://ignited-psi.vercel.app/api/courses/courseId/${courseId}`,
           updatedCourseData
         );
 
@@ -110,9 +98,8 @@ const InstructorDashboard = () => {
           console.log("Course successfully updated with image.");
         }
 
-        // Step 4: Refresh the instructor data
-        await fetchInstructorData(); // Refresh the instructor data to include the new course
-        setActiveSection("createdCourses"); // Redirect to the created courses section
+        await fetchInstructorData();
+        setActiveSection("createdCourses");
       }
     } catch (err) {
       console.error("Failed to create course:", err);
@@ -124,7 +111,7 @@ const InstructorDashboard = () => {
       case "createdCourses":
         return (
           <div className="content">
-            <h2>Courses Created</h2>
+            <h2 className="section-title">Courses Created</h2>
             <div className="course-grid">
               {createdCourses.length > 0 ? (
                 createdCourses.map((course) => (
@@ -143,9 +130,9 @@ const InstructorDashboard = () => {
       case "createCourse":
         return (
           <div className="content">
-            <h2>Create Course</h2>
-            <form onSubmit={handleCreateCourse}>
-              <div className="form-group">
+            <h2 className="section-title" >Create Course</h2>
+            <form onSubmit={handleCreateCourse} className="create-course-form">
+              <div className="form-group ">
                 <label>Course ID</label>
                 <input
                   type="text"
@@ -165,6 +152,7 @@ const InstructorDashboard = () => {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, name: e.target.value })
                   }
+                  placeholder="Enter the course name"
                   required
                 />
               </div>
@@ -175,6 +163,7 @@ const InstructorDashboard = () => {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, description: e.target.value })
                   }
+                  placeholder="Enter the course description"
                   required
                 ></textarea>
               </div>
@@ -186,19 +175,24 @@ const InstructorDashboard = () => {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, tags: e.target.value })
                   }
+                  placeholder="Enter tags (e.g., Python, Advanced)"
                   required
                 />
               </div>
               <div className="form-group">
                 <label>Complexity</label>
-                <input
-                  type="text"
+                <select
                   value={newCourse.complexity}
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, complexity: e.target.value })
                   }
                   required
-                />
+                >
+                  <option value="">Select Complexity</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>Prerequisites (comma-separated)</label>
@@ -211,6 +205,7 @@ const InstructorDashboard = () => {
                       prerequisites: e.target.value,
                     })
                   }
+                  placeholder="Enter prerequisites (e.g., Basic Python, OOP)"
                   required
                 />
               </div>
@@ -222,6 +217,7 @@ const InstructorDashboard = () => {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, duration: e.target.value })
                   }
+                  placeholder="Enter duration (e.g., 8 weeks)"
                   required
                 />
               </div>
@@ -233,6 +229,10 @@ const InstructorDashboard = () => {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, rating: e.target.value })
                   }
+                  placeholder="Enter rating (e.g., 4.5)"
+                  min="0"
+                  max="5"
+                  step="0.1"
                   required
                 />
               </div>
@@ -246,7 +246,7 @@ const InstructorDashboard = () => {
                   required
                 />
               </div>
-              <button type="submit">Create Course</button>
+              <button type="submit" className="createButton">Create Course</button>
             </form>
           </div>
         );
@@ -255,7 +255,6 @@ const InstructorDashboard = () => {
     }
   };
 
-  // Redirect to home if the user is not logged in
   if (!user) {
     return <Navigate to="/" />;
   }
@@ -263,7 +262,6 @@ const InstructorDashboard = () => {
   return (
     <div className="main-page">
       <div className="instructor-dashboard">
-        {/* Sidebar */}
         <div className="sidebar">
           <h1>Instructor Dashboard</h1>
           <button
@@ -276,11 +274,9 @@ const InstructorDashboard = () => {
             className={activeSection === "createCourse" ? "active" : ""}
             onClick={() => setActiveSection("createCourse")}
           >
-            Create New Course
+            Create Course
           </button>
         </div>
-
-        {/* Main Content */}
         <div className="main-content">{renderContent()}</div>
       </div>
     </div>

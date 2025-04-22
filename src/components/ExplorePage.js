@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "./CourseCard";
 import "../styles/ExplorePage.css";
 import axios from "axios"; // Import Axios for API calls
+import { UserContext } from "../context/UserContext";
+
 
 const ExplorePage = () => {
   const [courses, setCourses] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const { searchTerm } = useContext(UserContext); // Access searchTerm from context
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -41,13 +43,13 @@ const ExplorePage = () => {
   return (
     <div className="main-page">
       <div className="explore-page">
-        <input
+        {/* <input
           type="text"
           placeholder="Search courses..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar"
-        />
+        /> */}
         <div className="course-grid">
           {filteredCourses.map((course) => (
             <CourseCard

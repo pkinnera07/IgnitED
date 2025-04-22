@@ -26,6 +26,7 @@
   color: white;
   width: fit-content;
   justify-content: space-between;
+  width: 100%;
 }
 
 .header-left h1 {

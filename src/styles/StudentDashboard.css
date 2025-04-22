@@ -56,13 +56,35 @@
 .main-content {
   flex: 1; /* Take up remaining space next to the sidebar */
   padding: 40px;
-  background-color: transparent; /* Light background for content */
+  height: 100vh; /* Full height of the viewport */
+  background-image: url(../assets/paper.jpg); /* Light background for content */
+  background-size: cover;
   overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
-.main-content h2 {
-  font-size: 1.8em;
+.section-title {
+  font-size: 30px;
+  color: aliceblue;
+  background-image: url(../assets/header.jpg); /* Navy blue background */
+  background-size: cover ;
   margin-bottom: 10px;
+  border-radius: 10px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.section-subtitle {
+  font-size: 20px;
+  color: black;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  height: 30px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
 }
 
 .main-content p {
@@ -71,12 +93,47 @@
 }
 
 .content {
-  background-color: white;
+  background-color: transparent;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for content cards */
 }
 
 .course-grid{
   cursor: pointer;
+}
+
+
+.createButton {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px;
+}
+.createButton:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.create-course-form{
+  display: flex;
+  flex-direction: column; /* Stack form elements vertically */
+  width: 500px; /* Full width of the form */
+  padding: 10px;
+  margin-inline: 0px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  border: 1px solid black; /* Light border for the form */
+}
+
+.create-course-form .form-group{
+  margin-bottom: 15px; /* Space between form groups */
+  display: flex;
+  width: 480px; /* Full width of the form group */
+  flex-direction: column; /* Stack label and input vertically */
+}
+.create-course-form .form-group input{
+  width: 460px; /* Full width of the form group */
+
 }
