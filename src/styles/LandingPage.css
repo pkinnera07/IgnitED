@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap');
+
+/* Landing page container */
+.landing-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden; /* Prevent scrollbars during animation */
+  padding: 0 50px;
+  font-family: "Cabin Sketch", cursive; /* Custom font for the landing page */
+}
+
+/* Landing content */
+.landing-content {
+  flex: 1;
+  opacity: 0; /* Start invisible */
+  transform: translateX(-100%); /* Start off-screen to the left */
+  transition: transform 1s ease-out, opacity 1s ease-out; /* Smooth animation */
+}
+
+.landing-content.slide-in-left {
+  opacity: 1; /* Fade in */
+  transform: translateX(0); /* Slide into place */
+}
+
+.landing-content.slide-out-left {
+  opacity: 0; /* Fade out */
+  transform: translateX(-100%); /* Slide out to the left */
+}
+
+/* Landing image */
+.landing-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /* Start invisible */
+  transform: translateX(100%); /* Start off-screen to the right */
+  transition: transform 1s ease-out, opacity 1s ease-out; /* Smooth animation */
+}
+
+.landing-image.slide-in-right {
+  opacity: 1; /* Fade in */
+  transform: translateX(0); /* Slide into place */
+}
+
+.landing-image.slide-out-right {
+  opacity: 0; /* Fade out */
+  transform: translateX(100%); /* Slide out to the right */
+}
+
+.landing-content h1 {
+  font-size: 3em;
+  text-shadow: 0 0 3px black;
+}
+
+.landing-content p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  background-image: url(../assets/ystrip.jpg);
+  background-size: cover;
+  padding: 10px;
+  width: 200px;
+  height: 50px;
+  align-items: center; /* Center vertically */
+  display: flex; /* Use flexbox for alignment */
+  margin-top: 20px;
+}
+
+.button-container .explore-btn {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-shadow: 0 0 5px black;
+  margin-inline: auto;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  width: 180px;
+  padding: 10px 10px;
+}
+
+.explore-btn:hover {
+  background-color: transparent;
+  color: white;
+}
+
+.button-container:hover {
+  transition: transform 0.1s ease, box-shadow 0.1s ease; /* Smooth transition for hover effect */
+  transform: translate(10px, -10px); /* Move the button towards the top-left */
+  box-shadow: -10px 10px 0px rgb(0, 0, 0);
+}
+
+.landing-image img:hover {
+  rotate: 5deg;
+  transform: scale(1.05); /* Slightly enlarge the image on hover */
+  transition: transform 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.student-img1 {
+  rotate: -10deg;
+  width: 350px;
+}
+
+.student-img2 {
+  rotate: 10deg;
+  width: 350px;
+}

@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Cabin+Sketch&family=Caveat+Brush&family=Pangolin&family=Piedra&family=Rubik+Wet+Paint&display=swap');
+
+.auth-page {
+  display: flex; /* Use flexbox to align items side by side */
+  justify-content: center;
+  align-items: center; /* Vertically align items */
+  height: 100vh; /* Full viewport height */
+  width: 100%;
+  font-family: "Pangolin", cursive;
+  font-weight: 400;
+  gap: 20px; /* Add spacing between the image and container */
+}
+
+.auth-image {
+    width: auto; /* Take 50% of the width */
+    height: 70%; /* Match the height of the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent; /* Optional background for the image section */
+}
+
+.auth-image img {
+  width: 100%; /* Ensure the image scales properly */
+  height: 100%; /* Prevent overflow */
+  object-fit: contain; /* Maintain aspect ratio */
+}
+
+.auth-container {
+  width: 50%; /* Take 50% of the width */
+  height: 70%; /* Match the height of the image */
+  background: #ffffff62;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: black 1px solid; /* Optional border for the container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+}
+
+form{
+  margin-inline: 20px; /* Center the form */
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+  width: 500px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 500px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-button {
+  width: 520px;
+  padding: 10px;
+  background-image: url(../assets/header.jpg);
+  background-size: cover;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center; /* Center the text inside the button */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center the text horizontally */
+  align-items: center; /* Center the text vertically */
+  margin-top: 10px; /* Add spacing between the input field and button */
+}
+
+.auth-button:hover {
+  translate: 0px -5px; /* Move the button towards the top-left */
+  box-shadow: 0px 15px 10px rgba(0, 0, 0, 0.336); /* Add shadow effect on hover */
+}
+
+.auth-container p {
+  margin-top: 15px;
+}
+
+.auth-container a {
+  color: #61dafb;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+.sep-line {
+  margin: 20px 0;
+  height: 1px;
+  background-color: black;
+  width: 100%;
+}
+
+.user-type-radio {
+  margin-bottom: 20px;
+  text-align: left;
+  display: flex;
+  width: 100%;
+  color: white;
+  font-size: 16px;
+  align-items: center;
+  margin-inline: 20px;
+}
+
+.user-type-radio label {
+  display: block;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.user-type-radio input[type="radio"] {
+  margin-right: 10px;
+}
+
+/* Radio button styling */
+.radio {
+  color: black;
+  height: 20px;
+  width: 70px;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border: 1px solid black;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.3s ease;
+}
+
+input:checked ~ .radio {
+  color: white;
+  background-image: url(../assets/header.jpg);
+  background-size: cover;
+  font-size: 18px;
+  width: 100px;
+  opacity: 1;
+}
+
+.radio:hover {
+  font-size: 17px;
+}
+

@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Piedra&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Cabin+Sketch&family=Caveat+Brush&family=Pangolin&family=Piedra&family=Rubik+Wet+Paint&display=swap');
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-image: url(../assets/header.jpg);
+  background-size: cover;
+  color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 30px;
+  z-index: 1000;
+  border-top: white 2px solid;
+  border-bottom: white 2px solid;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.534);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  color: white;
+  width: fit-content;
+  justify-content: space-between;
+}
+
+.header-left h1 {
+  margin: 10px;
+  font-size: 35px;
+  font-family: "Rubik Wet Paint", system-ui;
+  text-shadow: 0 0 5px black;
+  text-decoration: none;
+  font-weight: normal;
+  width: max-content;
+  color: white;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-right input {
+  padding: 5px;
+  margin-right: 20px;
+}
+
+
+.search-bar {
+  display: flex;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 15px;
+  align-items: center;
+  flex-grow: 1;
+  margin-inline: 20px;
+  font-family: "Pangolin", cursive;
+  font-weight: 400;
+}
+
+.button-board{
+  background-image: url(../assets/board1.png);
+  background-size: cover;
+  background-position: center;
+  width: 135px;
+  height: 40px;
+  display: flex;
+  margin-inline: 10px;
+  border-radius: 10px;
+  align-items: center; /* Center vertically */
+}
+
+.link-button {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center icon and text vertically */
+  justify-content: center; /* Center content horizontally */
+  color: black;
+  background-color: transparent;
+  border: none;
+  font-family: "Pangolin", cursive;
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-inline: auto;
+  gap: 8px; /* Add spacing between the icon and the text */
+}
+
+.button-board:hover {
+  background-image: url(../assets/board2.png);
+  background-size: 100% 100%; /* Ensure the hover background also covers the entire button */
+  background-size: cover;
+  background-position: center; /* Center the hover background image */
+  transform: translateY(-8px); /* Move the button upwards on hover */
+}
+
+/* Profile dropdown container */
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Profile button */
+.profile-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 20px;
+  border-radius: 50px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  border-radius: 4px;
+  z-index: 1000;
+  padding: 10px 0;
+  max-width: 135px;
+}
+
+/* Dropdown items */
+.dropdown-item {
+  padding: 10px 20px;
+  color: #333;
+  background-image: url(../assets/logout.png);
+  background-size: cover;
+  background-position: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  width: 135px;
+  max-height: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-family: "Pangolin", cursive;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.534);
+}
+
+.dropdown-item:hover {
+  transform: scale(1.05); /* Slightly enlarge the item on hover */
+}
+
+/* Show dropdown menu on hover */
+.profile-dropdown:hover .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  width: 135px;
+}
+

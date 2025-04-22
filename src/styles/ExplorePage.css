@@ -1,0 +1,19 @@
+.explore-page {
+    padding: 20px;
+    margin-top: 60px;
+  }
+  
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .course-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  

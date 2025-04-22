@@ -1,0 +1,19 @@
+.line {
+  width: 0; /* Start with 0 width */
+  height: 5px; /* Fixed height */
+  background-color: #fff; /* White color for the line */
+  margin: 0 auto; /* Center the line horizontally */
+  animation: growShrink 2s infinite ease-in-out; /* Animation for growing and shrinking */
+}
+
+@keyframes growShrink {
+  0% {
+    width: 0; /* Start with no width */
+  }
+  50% {
+    width: 80%; /* Grow to 80% of the container width */
+  }
+  100% {
+    width: 0; /* Shrink back to no width */
+  }
+}

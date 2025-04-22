@@ -1,0 +1,82 @@
+/* Main dashboard container */
+.student-dashboard, .instructor-dashboard {
+  display: flex; /* Use flexbox for sidebar and main content */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden;
+  margin-top: 40px;
+  background-color: transparent; /* Light background for the dashboard */
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 200px; /* Fixed width for the sidebar */
+  background-image: url(../assets/sidebar.jpg); /* Navy blue background */
+  background-size: cover;
+  color: azure; /* Light text color */
+  display: flex;
+  flex-direction: column; /* Stack sidebar items vertically */
+  align-items: left;
+  padding: 20px;
+  border-right: 2px solid white; /* Light border for separation */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.482); /* Shadow for separation */
+}
+
+.sidebar h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-family: "Pangolin", cursive; /* Custom font for the sidebar title */
+}
+
+.sidebar button {
+  width: 80%; /* Full width of the sidebar */
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background-image: url(../assets/tile.jpg); /* Navy blue background */
+  color: black;
+  border: none;
+  text-align: left; /* Align text to the left */
+  font-size: 16px;
+  cursor: pointer; 
+  border-radius: 5px; /* Rounded corners */
+  transition: 0.3s ease, text-align 0.3s ease; /* Smooth transition for hover effect */
+}
+
+
+.sidebar button.active, .sidebar button:hover {
+  color: #011629; /* Navy blue text for active button */
+  width: 100%;
+  text-align: right;
+}
+
+.sidebar button.active{
+  font-weight: bold;
+  transition: 0.3s ease; /* Smooth transition for active button */
+}
+/* Main content styling */
+.main-content {
+  flex: 1; /* Take up remaining space next to the sidebar */
+  padding: 40px;
+  background-color: transparent; /* Light background for content */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+.main-content h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+.main-content p {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for content cards */
+}
+
+.course-grid{
+  cursor: pointer;
+}
