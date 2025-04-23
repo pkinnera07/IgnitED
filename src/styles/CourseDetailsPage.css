@@ -118,7 +118,7 @@
 .course-detail-title {
   font-size: 30px;
   margin: 0px;
-  height: 40px;
+  height: fit-content;
   display: flex;
   align-items: center;
   padding: 5px;

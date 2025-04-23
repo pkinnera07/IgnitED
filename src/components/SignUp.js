@@ -6,20 +6,13 @@ import LoginImage from "../assets/login.jpg"; // Correctly import the image
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 
 const Signup = () => {
-  const { setUser, setUserType } = useContext(UserContext); // Access the setUser and setUserType functions from context
+  const { userType, setUser, setUserType } = useContext(UserContext); // Access the setUser and setUserType functions from context
   const [isCodeSent, setIsCodeSent] = useState(false); // Track if the code has been sent
-  const [userType, setLocalUserType] = useState("student"); // Default userType is "student"
   const [name, setFullName] = useState(""); // State for full name
   const [email, setEmail] = useState(""); // State for email
   const [verificationCode, setVerificationCode] = useState(""); // State for verification code
   const [message, setMessage] = useState(""); // State for success/error message
   const navigate = useNavigate(); // Hook for navigation
-
-  // Update the global userType when the local userType changes
-  const handleUserTypeChange = (type) => {
-    setLocalUserType(type);
-    setUserType(type); // Update the global userType in context
-  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -103,7 +96,7 @@ const Signup = () => {
                 id="student"
                 value="student"
                 checked={userType === "student"}
-                onChange={() => handleUserTypeChange("student")}
+                onChange={() => setUserType("student")}
                 hidden
               />
               <label
@@ -120,7 +113,7 @@ const Signup = () => {
                 id="instructor"
                 value="instructor"
                 checked={userType === "instructor"}
-                onChange={() => handleUserTypeChange("instructor")}
+                onChange={() => setUserType("instructor")}
                 hidden
               />
               <label

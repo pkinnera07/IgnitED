@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 import { BsPersonCircle } from "react-icons/bs";

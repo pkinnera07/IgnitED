@@ -6,19 +6,12 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 
 const Login = () => {
-  const { setUser, setUserType } = useContext(UserContext); // Access the setUser and setUserType functions from context
+  const { userType, setUser, setUserType } = useContext(UserContext); // Access the setUser and setUserType functions from context
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [message, setMessage] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false); // Track if the code has been sent
-  const [userType, setLocalUserType] = useState("student"); // Default userType is "student"
   const navigate = useNavigate();
-
-  // Update the global userType when the local userType changes
-  const handleUserTypeChange = (type) => {
-    setLocalUserType(type);
-    setUserType(type); // Update the global userType in context
-  };
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -99,7 +92,7 @@ const Login = () => {
                 id="student"
                 value="student"
                 checked={userType === "student"}
-                onChange={() => handleUserTypeChange("student")}
+                onChange={() => setUserType("student")}
                 hidden
               />
               <label
@@ -116,7 +109,7 @@ const Login = () => {
                 id="instructor"
                 value="instructor"
                 checked={userType === "instructor"}
-                onChange={() => handleUserTypeChange("instructor")}
+                onChange={() => setUserType("instructor")}
                 hidden
               />
               <label

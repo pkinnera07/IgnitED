@@ -110,7 +110,6 @@ const StudentDashboard = () => {
             <div className="course-grid">
               {recommendations.length > 0 ? (
                 recommendations.map((course) => (
-                  console.log(course),
                   <CourseCard
                     key={course._id}
                     course={course}
