@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+# IgnitED
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+IgnitED is a modern web application designed to provide an interactive and engaging platform for students and instructors. It allows students to explore, enroll in, and manage courses, while instructors can create, manage, and share their courses with ease. The application is built using the latest web technologies and follows a modular and scalable architecture.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+1. [Tech Stack](#tech-stack)
+2. [Features](#features)
+3. [Folder Structure](#folder-structure)
+4. [Implementation Details](#implementation-details)
+5. [Setup and Installation](#setup-and-installation)
+6. [API Endpoints](#api-endpoints)
+7. [Screenshots](#screenshots)
+8. [Future Enhancements](#future-enhancements)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+### Frontend
+- **React.js**: A JavaScript library for building user interfaces.
+- **React Router**: For managing navigation and routing.
+- **Axios**: For making HTTP requests to the backend API.
+- **CSS**: Custom stylesheets for responsive and visually appealing UI.
+- **React Icons**: For adding icons to the UI.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
+- **Node.js**: Backend runtime environment (API hosted externally).
+- **Express.js**: RESTful API framework (API hosted externally).
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Database
+- **MongoDB**: NoSQL database for storing user, course, and enrollment data (API hosted externally).
 
 ### Deployment
+- **Vercel**: Hosting platform for the frontend.
+- **External API**: Backend API hosted on a separate server.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### For Students
+- Explore available courses with search functionality.
+- Enroll in courses and view enrolled courses.
+- Access course content and modules.
+- View grades and certificates.
+
+### For Instructors
+- Create new courses with detailed information.
+- Upload course modules and content (PDFs).
+- Manage created courses (edit or delete).
+- View enrolled students.
+
+### General
+- User authentication with email verification.
+- Role-based access for students and instructors.
+- Responsive design for mobile and desktop users.
+
+
+## Implementation Details
+
+### 1. **Authentication**
+- **Signup**: Users can sign up as either a student or an instructor. A verification code is sent to their email for account activation.
+- **Login**: Users log in using their email and a verification code.
+- **Context API**: The `UserContext` manages global state for user data and authentication.
+
+### 2. **Role-Based Dashboards**
+- **Student Dashboard**:
+  - Displays enrolled courses.
+  - Shows course recommendations based on enrolled courses.
+  - Allows access to grades and certificates.
+- **Instructor Dashboard**:
+  - Displays courses created by the instructor.
+  - Provides a form to create new courses.
+  - Allows uploading of course modules and content.
+
+### 3. **Course Management**
+- **Explore Page**: Lists all available courses with a search bar for filtering.
+- **Course Details Page**:
+  - Displays detailed information about a course.
+  - Allows students to enroll or unenroll.
+  - Allows instructors to upload modules or delete the course.
+
+### 4. **Styling**
+- Custom CSS stylesheets are used for a consistent and responsive design.
+- Media queries ensure the application is mobile-friendly.
+
+### 5. **API Integration**
+- **Axios** is used to interact with the backend API for:
+  - User authentication.
+  - Fetching course data.
+  - Enrolling/unenrolling in courses.
+  - Uploading course content.
+
+---
+
+## Setup and Installation
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/ignited.git
+   cd ignited
+```
+
+---
+
+## API Endpoints
+
+### Authentication
+- **POST** `/api/auth/signup`: Register a new user.
+- **POST** `/api/auth/login`: Log in a user.
+- **POST** `/api/auth/verify-code`: Verify the email verification code.
+
+### Courses
+- **GET** `/api/courses`: Fetch all available courses.
+- **GET** `/api/courses/:courseId`: Fetch details of a specific course.
+- **POST** `/api/courses`: Create a new course (instructor only).
+- **DELETE** `/api/courses/:courseId`: Delete a course (instructor only).
+
+### Enrollment
+- **POST** `/api/students/:studentId/enroll`: Enroll in a course.
+- **DELETE** `/api/students/:studentId/unenroll`: Unenroll from a course.
+```
+
