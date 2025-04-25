@@ -109,23 +109,4 @@ IgnitED is a modern web application designed to provide an interactive and engag
    cd ignited
 ```
 
----
-
-## API Endpoints
-
-### Authentication
-- **POST** `/api/auth/signup`: Register a new user.
-- **POST** `/api/auth/login`: Log in a user.
-- **POST** `/api/auth/verify-code`: Verify the email verification code.
-
-### Courses
-- **GET** `/api/courses`: Fetch all available courses.
-- **GET** `/api/courses/:courseId`: Fetch details of a specific course.
-- **POST** `/api/courses`: Create a new course (instructor only).
-- **DELETE** `/api/courses/:courseId`: Delete a course (instructor only).
-
-### Enrollment
-- **POST** `/api/students/:studentId/enroll`: Enroll in a course.
-- **DELETE** `/api/students/:studentId/unenroll`: Unenroll from a course.
-```
 
