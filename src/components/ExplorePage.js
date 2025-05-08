@@ -4,6 +4,7 @@ import CourseCard from "./CourseCard";
 import "../styles/ExplorePage.css";
 import axios from "axios"; // Import Axios for API calls
 import { UserContext } from "../context/UserContext";
+import loadingImage from "../assets/load.gif"; // Import loading image
 
 
 const ExplorePage = () => {
@@ -33,7 +34,11 @@ const ExplorePage = () => {
   );
 
   if (loading) {
-    return <p>Loading courses...</p>;
+    return (
+      <div className="loading-container">
+        <img src={loadingImage} alt="Loading..." className="loading-image" />
+      </div>
+      );
   }
 
   if (error) {

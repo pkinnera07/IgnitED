@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
-import LoginImage from "../assets/login.jpg";
+import LoginImage from "../assets/s4.png";
 import axios from "axios";
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 

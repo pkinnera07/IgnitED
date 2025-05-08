@@ -169,7 +169,7 @@ const CourseDetailsPage = () => {
           {/* Unenroll Button (only if the user is enrolled and not the creator) */}
           {isEnrolled && !isCreator && (
             <button
-              className="unenroll-button"
+              className="unenroll-btn"
               onClick={() => setShowUnenrollPrompt(true)} // Show the unenroll prompt
             >
               Unenroll
@@ -180,13 +180,13 @@ const CourseDetailsPage = () => {
           {isCreator && (
             <>
               <button
-                className="unenroll-button"
+                className="upload-btn"
                 onClick={() => setShowAddSectionForm(true)} // Show the add section form
               >
                 Upload Content
               </button>
               <button
-                className="unenroll-button"
+                className="unenroll-btn"
                 onClick={() => setShowDeletePrompt(true)} // Show the delete course prompt
               >
                 Delete Course
@@ -209,7 +209,8 @@ const CourseDetailsPage = () => {
                 <p><strong>Duration:</strong> {course.duration}</p>
                 <p><strong>Prerequisites:</strong> {course.prerequisites.join(", ")}</p>
                 <p><strong>Rating:</strong> {course.rating} / 5</p>
-                <p>[{course.tags.join(", ")}]</p>
+                <p><strong>Tags:</strong> [{course.tags.join(", ")}]</p>
+
               </div>
             </div>
             <h4 className="description">{course.description}</h4>
@@ -274,7 +275,7 @@ const CourseDetailsPage = () => {
         <div className="prompt">
           <div className="prompt-content">
             <h2>Are you sure you want to delete this course?</h2>
-            <button className="confirm-button prompt-button" onClick={handleDeleteCourse}>
+            <button className="confirm-negative-button prompt-button" onClick={handleDeleteCourse}>
               Yes, Delete
             </button>
             <button className="cancel-button prompt-button" onClick={() => setShowDeletePrompt(false)}>
@@ -289,7 +290,7 @@ const CourseDetailsPage = () => {
         <div className="prompt">
           <div className="prompt-content">
             <h2>Are you sure you want to unenroll from this course?</h2>
-            <button className="confirm-button prompt-button" onClick={handleUnenroll}>
+            <button className="confirm-negative-button prompt-button" onClick={handleUnenroll}>
               Yes, Unenroll
             </button>
             <button className="cancel-button prompt-button" onClick={() => setShowUnenrollPrompt(false)}>

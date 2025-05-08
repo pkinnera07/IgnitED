@@ -187,25 +187,25 @@ const StudentDashboard = () => {
         <div className="sidebar">
           <h1>My Dashboard</h1>
           <button
-            className={activeSection === "overview" ? "active" : ""}
+            className= {activeSection === "overview" ? "active sidebar-btn" : "sidebar-btn"}
             onClick={() => setActiveSection("overview")}
           >
             Overview
           </button>
           <button
-            className={activeSection === "courses" ? "active" : ""}
+            className={activeSection === "courses" ? "active sidebar-btn" : "sidebar-btn"}
             onClick={() => setActiveSection("courses")}
           >
             Courses Enrolled
           </button>
           <button
-            className={activeSection === "grades" ? "active" : ""}
+            className={activeSection === "grades" ? "active sidebar-btn" : "sidebar-btn"}
             onClick={() => setActiveSection("grades")}
           >
             Grades
           </button>
           <button
-            className={activeSection === "certificates" ? "active" : ""}
+            className={activeSection === "certificates" ? "active sidebar-btn" : "sidebar-btn"}
             onClick={() => setActiveSection("certificates")}
           >
             Certificates

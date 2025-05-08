@@ -26,6 +26,11 @@
   object-fit: contain; /* Maintain aspect ratio */
 }
 
+.auth-image:hover {
+  transform: scale(1.05); /* Slightly enlarge the image on hover */
+  transition: transform 0.3s ease; /* Smooth transition effect */
+}
+
 .auth-container {
   width: 50%; /* Take 50% of the width */
   height: 70%; /* Match the height of the image */

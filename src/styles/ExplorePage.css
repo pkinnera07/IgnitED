@@ -10,6 +10,18 @@
     padding: 20px;
     margin-top: 10px;
   }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .loading-container img {
+    width: 400px;
+    height: 400px;
+  }
   
   @media (max-width: 768px) {
     .course-grid {

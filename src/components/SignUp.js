@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import "../styles/Auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import Axios for API calls
-import LoginImage from "../assets/login.jpg"; // Correctly import the image
+import LoginImage from "../assets/s4.png"; // Correctly import the image
 import { UserContext } from "../context/UserContext"; // Import the UserContext
 
 const Signup = () => {

@@ -7,7 +7,7 @@ import axios from "axios";
 
 const InstructorDashboard = () => {
   const [activeSection, setActiveSection] = useState("createdCourses");
-  const { user } = useContext(UserContext); // Access the user data from context
+  const { user, setUser } = useContext(UserContext); // Access the user data from context
   const [createdCourses, setCreatedCourses] = useState([]); // State to store courses created by the instructor
   const [newCourse, setNewCourse] = useState({
     name: "",
@@ -96,10 +96,17 @@ const InstructorDashboard = () => {
 
         if (updateResponse.status === 200) {
           console.log("Course successfully updated with image.");
-        }
 
-        await fetchInstructorData();
-        setActiveSection("createdCourses");
+          // Update the UserContext with the new course
+          setUser((prevUser) => ({
+            ...prevUser,
+            coursesCreated: [...prevUser.coursesCreated, createdCourse],
+          }));
+
+          // Fetch the updated instructor data
+          await fetchInstructorData();
+          setActiveSection("createdCourses");
+        }
       }
     } catch (err) {
       console.error("Failed to create course:", err);
